@@ -12,7 +12,7 @@ Instructions:
 1. Install phantomjs
 2. Install Meteor
 3. In one console window: `cd sut; ./run`
-4. In another console window: `phantomjs loadmeteor.js http://localhost:3000`
+4. In another console window: `phantomjs test-scripts/loadmeteor.js http://localhost:3000`
 
 
 What's it do?
