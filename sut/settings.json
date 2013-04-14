@@ -1,0 +1,6 @@
+{
+  "serverId": 1,
+  "query": {},
+  "sort": {"createdAt": -1},
+  "limit": 10
+}
