@@ -55,34 +55,29 @@ if (Meteor.isClient) {
 
   Template.hello.events({
     'click button' : function (evt) {
-      var i = 0,
-          entry;
+      var entry;
 
       evt.preventDefault();
 
-      // create 2 unique entries
-      for (; i < 2; i++) {
+      entryIndex++;
 
-        entryIndex++;
+      entry = {
+        ownerId: clientId,
+        name: "entry-" + entryIndex,
+        type: "client",
+        createdAt: new Date()
+      };
 
-        entry = {
-          ownerId: clientId,
-          name: "entry-" + entryIndex,
-          type: "client",
-          createdAt: new Date()
-        };
+      //console.log('creating entry');
 
-        //console.log('creating entry');
+      Meteor.call('addEntry', entry, function(error, id) { 
+        if (error) {
+          console.log(error);
+        } else {
+          //console.log('id ' + id);
+        }
+      });
 
-        Meteor.call('addEntry', entry, function(error, id) { 
-          if (error) {
-            console.log(error);
-          } else {
-            //console.log('id ' + id);
-          }
-        });
-
-      }
     }
   });
 
@@ -94,10 +89,21 @@ if (Meteor.isClient) {
 //
 if (Meteor.isServer) {
   var settings = Meteor.settings || {},
-      serverId = settings.serverId || Meteor.uuid();
+      serverId = settings.serverId || Meteor.uuid(),
+      entryIndex = 0;
 
   Meteor.methods({
     addEntry: function (entry) {
+     
+      if (!entry) {
+        entry = {
+          ownerId: "0",
+          name: "entry-" + entryIndex++,
+          type: "server",
+          createdAt: new Date()
+        };
+      }
+
       Meteor.entries.insert(entry);
     }
   });
