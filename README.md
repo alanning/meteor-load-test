@@ -85,6 +85,43 @@ Note: Currently collection updates are received via Meteor subscriptions but the
 Given that, probably the most realistic way to test responsiveness of your app under load is to spin up your agents, kick off the tests, wait for them to saturate your server, and then visit your site via your own browser.
 
 
+## Terminology
+
+Source: Goranka Bjedov, [Google Tech Talk](http://www.youtube.com/watch?v=335LKIXRauA&feature=gv)
+
+Performance Testing
+  * given load X, how quickly will the system return a result
+  * timing
+
+Stress Testing
+  * when will the system fail and how will it fail
+  * under what load will the system fail
+
+Load Test
+  * 80% of max load, what happens if run load for long period of time
+
+Scalability
+  * if I increase a certain resource, how will my through-put change
+
+Performance Profiling
+  * used for very specific drill-down
+
+Reliability Testing
+  * run load for 72+ hours
+  * five 'nines'
+
+Availability Testing
+  * if a system fails, how quickly will the system come back online
+
+Why test Performance?
+  * Can our system return results as fast as customers want?
+  * To prove stats for agreements
+  * Peace of mind
+
+Why NOT to test Performance?
+  * functional testing
+
+
 ## Future work
 
 Create Chef or Pallet scripts to automate creation of Grinder agent instances in the cloud
