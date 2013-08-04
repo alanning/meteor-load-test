@@ -1,10 +1,12 @@
 ## What is this?
 A load testing tool for Meteor applications.
 
-This tool utilizes the [Grinder](http://grinder.sourceforge.net/) to manage agents which execute a customized test script capable of speaking DDP with the targe Meteor server.  Each agent simulates 1 or more client connections and records performance metrics.
+** <b>Important!</b> Please don't load test sites running on meteor.com! Use your own servers! ** 
 
-Users can specify properties such as:
- * Meteor method calls to perform
+This tool utilizes [the Grinder](http://grinder.sourceforge.net/) to manage agents which execute a customized test script capable of speaking DDP with the target Meteor server.  Each agent simulates 1 or more client connections and records performance metrics.
+
+Users can configure options such as:
+ * Meteor methods to calls
  * Meteor subscriptions to initiate
  * Number of threads to start
  * Wait time between thread start
@@ -75,8 +77,7 @@ In the results tab, you should see test results
 
 ## How to use
 
-Modify `working.properties` as appropriate.  
-See the [Grinder documentation](http://grinder.sourceforge.net/g3/properties.html) for more options
+Modify `working.properties` as appropriate. See the [Grinder documentation](http://grinder.sourceforge.net/g3/properties.html) for more options
 
 Grinder agents should be started on separate boxes (not your webserver).
 
