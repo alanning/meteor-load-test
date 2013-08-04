@@ -1,0 +1,43 @@
+<head>
+  <title>load-test</title>
+</head>
+
+<body>
+  {{> main}}
+</body>
+
+<template name="main">
+  <h1>Load testing example app</h1>
+
+  <div class="total-entry-count">
+    Total entries: {{totalEntryCount}} 
+  </div>
+
+  <form class="num-entries-form">
+    <label>Display 
+      <select id="numEntries" name="numEntries">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+        entries
+      </label>
+  </form>
+
+  <button>Add entry</button>
+
+  <ol class="entries">
+    {{#each entries}}
+    <li>
+      <dl>
+        <dt>{{name}}</dt>
+        <dd>{{createdAt}}</dd>
+        <dd>by: {{type}} {{ownerId}}</dd>
+        <dd class="color-tag" style="background-color:{{colorTag}}">&nbsp;</dd>
+      </dl>
+    </li>
+    {{/each}}
+  </ol>
+
+</template>

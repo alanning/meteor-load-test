@@ -1,0 +1,97 @@
+#!/bin/bash
+
+#
+# usage info
+#
+
+usage="echo -en '
+grinder agent start [host] \n
+grinder agent stop \n
+\n
+grinder console start [remote-ip ...] \n
+grinder console stop \n
+'"
+
+#
+# initial setup of vars and dirs
+#
+
+grinder_log=log
+classpath=`lein classpath`:$CLASSPATH
+mkdir -p $grinder_log
+
+#
+# agent functions
+#
+
+agent_count()
+{
+    echo `jps|grep Grinder|wc -l`
+}
+
+agent_start ()
+{
+    count=`agent_count`
+    log=$grinder_log/agent_$(( ++count )).log
+    java -Dgrinder.consoleHost=$1 -cp $classpath net.grinder.Grinder -daemon 3 $grinder/default.properties &> $log &
+    echo Grinder agent started as process $! logging to $log
+}
+
+agent_stop ()
+{
+    count=`agent_count`
+    [ $count -eq 0 ] && { echo no agents to stop; return 0; }
+    jps|grep Grinder|cut -d' ' -f1|xargs kill
+    echo stopped $count Grinder `[ $count -eq 1 ] && echo agent || echo agents`
+}
+
+#
+# console functions
+#
+
+console_start ()
+{
+    java -Xms128m -Xmx1024m -cp $classpath net.grinder.Console $3 &> $grinder_log/console.log &
+}
+
+console_stop ()
+{
+    jps|grep Console|cut -d' ' -f1|xargs kill
+}
+
+#
+# command line handling
+#
+
+case $1 in
+
+    agent)
+	case $2 in
+	    start)
+		agent_start ${3:-localhost}
+		;;
+	    stop)
+		agent_stop
+		;;
+	    *)
+		eval $usage
+	esac
+	;;
+
+    console)
+	case $2 in
+	    start)
+		console_start
+		;;
+	    stop)
+		console_stop
+		;;
+	    *)
+		eval $usage
+	esac
+	;;
+
+    *)
+	eval $usage
+
+esac

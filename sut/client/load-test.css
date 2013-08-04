@@ -1,0 +1,13 @@
+/* CSS declarations go here */
+
+body { font-size:16px; }
+
+dt, dd { display:inline-block; border-bottom:1px dotted #ccc; }
+dt { width: 6em; }
+dd { font-size:0.8em; color:#333; }
+.color-tag {width:1.5em;border:none;}
+
+button, .total-entry-count { margin-bottom:1em; margin-left:1em; }
+select, button { padding:0.8em 1em; line-height:1.5em; font-size:1.1em; }
+
+.total-entry-count, .num-entries-form { display:inline-block; margin-right:2em; }
