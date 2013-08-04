@@ -1,9 +1,7 @@
 ## What is this?
 A load testing tool for Meteor applications.
 
-It is an extension of the test setup that Andy Kriger demonstrated at Clojure/West 2012 which load-tested stateless websites.  Andy's code can be found here: [load-testing-with-clojure](https://github.com/locopati/load-testing-with-clojure).
-
-Specifically, a [Grinder](http://grinder.sourceforge.net/) script was added which connects to a Meteor application using a [Java DDP client](https://github.com/kutrumbo/java-ddp-client) and executes DDP calls.
+This tool utilizes the [Grinder](http://grinder.sourceforge.net/) to manage agents which execute a customized test script capable of speaking DDP with the targe Meteor server.  Each agent simulates 1 or more client connections and records performance metrics.
 
 Users can specify properties such as:
  * Meteor method calls to perform
@@ -96,6 +94,8 @@ Explore recording timing information for length of time to finish receiving all 
 
 ## Acknowledgements
 
-Based on [load-testing-with-clojure](https://github.com/locopati/load-testing-with-clojure) by Andy Kriger
+Based on [load-testing-with-clojure](https://github.com/locopati/load-testing-with-clojure) by Andy Kriger which load-tests stateless websites.
 
-Uses [java-ddp-client](https://github.com/kutrumbo/java-ddp-client) by Peter Kutrumbos to communicate with Meteor server
+Uses the [java-ddp-client](https://github.com/kutrumbo/java-ddp-client) by Peter Kutrumbos to communicate with the target Meteor server.
+
+Evolved from discussion on the meteor-talk google group: [Load Testing Meteor](https://groups.google.com/forum/#!topic/meteor-talk/M9waYvcFufs). In particular, major thanks to Andrew Wilcox, Sam Hatoum, Matt DeBergalis, and Tom Coleman for their guidance and suggestions.
