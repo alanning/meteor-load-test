@@ -6,8 +6,8 @@ A load testing tool for Meteor applications.
 This tool utilizes [the Grinder](http://grinder.sourceforge.net/) to manage agents which execute a customized test script capable of speaking DDP with the target Meteor server.  Each agent simulates 1 or more client connections and records performance metrics.
 
 Users can configure options such as:
- * Meteor methods to call
- * Meteor subscriptions to initiate
+ * Meteor methods to call with parameters
+ * Meteor subscriptions to initiate with parameters
  * Number of clients to simulate
  * Wait time between thread start
  * Client ramp-up (process increment)
