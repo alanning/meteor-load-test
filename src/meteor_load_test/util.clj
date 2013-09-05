@@ -125,57 +125,6 @@
     (log client-id " subscribing to: " collection-name v)
     (.subscribe ddp collection-name (object-array v))))
 
-(comment
-(def html "<head>
-  <link rel=\"stylesheet\" href=\"/client/load-test.css?c946c3d657a4acb7b5d72e3ad90c123dc170eb80\">
-
-<script type=\"text/javascript\">
-__meteor_runtime_config__ = {\"meteorRelease\":\"0.6.4.1\",\"ROOT_URL\":\"http://localhost:3000\",\"serverId\":\"7oY9wH5mjBf5rTd7Q\"};
-</script>
-
-  <script type=\"text/javascript\" src=\"/packages/underscore/underscore.js?ed2d2b960c0e746b3e4f9282d5de66ef7b1a2b4d\"></script>
-  <script type=\"text/javascript\" src=\"/packages/meteor/client_environment.js?07a7cfbe7a2389cf9855c7db833f12202a656c6b\"></script>
-  <script type=\"text/javascript\" src=\"/packages/meteor/helpers.js?2968aa157e0a16667da224b8aa48edb17fbccf7c\"></script>
-
-<title>load-test</title>
-</head>")
-
-(re-seq #"src=\"([^\"]+)\"" html)
-(re-seq #"href=\"([^\"]+)\"" html)
-(let [css (re-seq #"href=\"([^\"]+)\"" html)
-      scripts (re-seq #"src=\"([^\"]+)\"" html)
-      coll (concat css scripts)]
-
-  (doseq [[_ url] coll]
-    (println url)
-    ))
-
-(def u "http://localhost:3000")
-(let [css (re-seq #"href=\"([^\"]+)\"" html)
-      scripts (re-seq #"src=\"([^\"]+)\"" html)
-      coll (concat css scripts)
-      base-url (drop-last-if u '\/)]
-  (doseq [[_ url] coll]
-    (println (apply str (concat base-url url)))
-    ))
-)
-
-(comment
-(def s )
-(first s)
-(= '\/ (first s))
-(apply (drop 1 s))
-(rest s)
-(def u "http://localhost:3000/")
-(apply str u (if (= '\/ (first s))
-                (drop 1 s)
-                s))
-(if (= '\/ (last u))
-  (apply str (pop (vec u)))
-  u)
-(drop-last-if s '\/)
-)
-
 (defn drop-last-if 
   "Returns s without last character c, or s as appropriate"
   [c s]
