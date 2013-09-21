@@ -25,8 +25,16 @@ cd meteor-load-test
 lein deps  # downloads dependencies
 ```
 
+## Running Tests
+
+There are three parts to running your load tests:
+  1. The system you are testing
+  2. The agents which execute the test script
+  3. A console which manages all the agents
+
+
 ## The System Under Test (SUT)
-<b>To start the server</b>
+<b>To start an example server</b>
 
 ```bash
 cd sut
@@ -133,6 +141,6 @@ Explore recording timing information for length of time to finish receiving all 
 
 Based on [load-testing-with-clojure](https://github.com/locopati/load-testing-with-clojure) by Andy Kriger which load-tests stateless websites.
 
-Uses the [java-ddp-client](https://github.com/kutrumbo/java-ddp-client) by Peter Kutrumbos to communicate with the target Meteor server.
+Uses the [java-ddp-client](https://github.com/kenyee/java-ddp-client) by Ken Yee to communicate with the target Meteor server.
 
 Evolved from discussion on the meteor-talk google group: [Load Testing Meteor](https://groups.google.com/forum/#!topic/meteor-talk/M9waYvcFufs). In particular, major thanks to Andrew Wilcox, Sam Hatoum, Matt DeBergalis, and Tom Coleman for their guidance and suggestions.

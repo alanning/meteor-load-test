@@ -2,8 +2,7 @@
   (:require [clojure.data.json :as json]
             [clojure.string :as str])
   (:import [java.net URI]
-           [me.kutrumbos DdpClient]
-           [me.kutrumbos.examples SimpleDdpClientObserver])
+           [com.keysolutions.ddpclient DDPClient])
   (:use meteor-load-test.util)
   )
 
@@ -35,7 +34,7 @@
         (log "grinder.subscriptions: " subscriptions)
         (log "host: " (.getHost targetUrl) ", port: " (get-port targetUrl)))
 
-      (let [ddp (DdpClient. (.getHost targetUrl) (get-port targetUrl))
+      (let [ddp (DDPClient. (.getHost targetUrl) (get-port targetUrl))
             client-id (get-client-id)
            ]
 
@@ -57,7 +56,7 @@
           (partial get-relative-url target-url-str)
           initial-html)
         
-        (if debug? (.addObserver ddp (SimpleDdpClientObserver.)))
+        ;(if debug? (.addObserver ddp (SimpleDdpClientObserver.)))
         
         ;; connect ddp client
         (.connect ddp)
