@@ -47,6 +47,17 @@ http://localhost:3000/
 
 
 ## The Grinder
+
+The Grinder is organized into two tiers: 
+  * the console, which controls agents and distributes the test scripts, and 
+  * the agents, which execute the tests and report back to the console.  
+ 
+The console sends the configuration and test scripts to the agents, on demand, so 
+modifying your tests and re-executing is straight-forward.  Each agent can 
+start multiple processes and each process can run your test script multiple
+times so generating a large amount of load is quite efficient.  
+
+
 <b>To start an agent</b>
 
 ```bash
