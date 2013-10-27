@@ -8,6 +8,7 @@ This tool utilizes [the Grinder](http://grinder.sourceforge.net/) to manage agen
 Users can configure options such as:
  * Meteor methods to call with parameters
  * Meteor subscriptions to initiate with parameters
+ * User login via resumeToken
  * Number of clients to simulate
  * Wait time between thread start
  * Client ramp-up (process increment)
