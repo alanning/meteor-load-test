@@ -47,11 +47,14 @@
         (def initial-html (.getText (get-html target-url-str)))
 
         (defn- get-relative-url 
-          "Gets a url relative to base url. Relative url must
+          "Gets a url relative to base url. Relative url may
            start with /"
           [base-url relative-url]
-          (let [base (drop-last-if '\/ base-url)]
-            (get-html (apply str (concat base relative-url)))))
+          (let [base (drop-last-if '\/ base-url)
+                rel  (if (= \/ (first relative-url))
+                        relative-url
+                        (str \/ relative-url))]
+            (get-html (str base rel))))
 
         ;; make subsequent javascript / css fetches
         (process-urls
