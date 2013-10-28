@@ -16,7 +16,7 @@
   [stop-thread propertyBag get-client-id get-run-id get-html]
 
   (let [target-url-str (.getProperty propertyBag "grinder.targetUrl")
-        resume-token (.getProperty propertyBag "grinder.resumeToken")
+        resume-tokens (.getProperty propertyBag "grinder.resumeTokens")
         calls-raw (.getProperty propertyBag "grinder.calls")
         subscriptions (get-json-property propertyBag "grinder.subscriptions")
         debug? (.getBoolean propertyBag "grinder.debug" false)]
@@ -31,7 +31,7 @@
 
       (when debug?
         (log "grinder.targetUrl: " target-url-str)
-        (log "grinder.resumeToken: " resume-token)
+        (log "grinder.resumeTokens: " resume-tokens)
         (log "grinder.calls: " calls-raw)
         (log "grinder.subscriptions: " subscriptions)
         (log "host: " (.getHost targetUrl) ", port: " (get-port targetUrl)))
@@ -66,9 +66,10 @@
         ;; connect ddp client
         (.connect ddp)
 
-        ;; perform login resume, if token provided
-        (when-let [token resume-token]
-          (call-method ddp "login" [{"resume" token}]))
+        ;; perform login via random resume token, if provided
+        (when resume-tokens
+          (let [tokens (clojure.string/split resume-tokens #",")]
+            (call-method ddp "login" [{"resume" (rand-nth tokens)}])))
 
         ;; initiate subscriptions
         (perform-subscriptions ddp client-id subscriptions)
