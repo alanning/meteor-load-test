@@ -8,7 +8,7 @@ This tool utilizes [the Grinder](http://grinder.sourceforge.net/) to manage agen
 Users can configure options such as:
  * Meteor methods to call with parameters
  * Meteor subscriptions to initiate with parameters
- * User login via resumeToken
+ * User login via resumeTokens
  * Number of clients to simulate
  * Wait time between thread start
  * Client ramp-up (process increment)
@@ -57,6 +57,17 @@ The console sends the configuration and test scripts to the agents, on demand, s
 modifying your tests and re-executing is straight-forward.  Each agent can 
 start multiple processes and each process can run your test script multiple
 times so generating a large amount of load is quite efficient.  
+
+ Number of simulated clients = agents * processes * threads
+
+ Each thread (client) will: 
+
+   1. Request initial payload
+   2. Request css & scripts found in initial response
+   3. Initiate DDP connection
+   4. Login via random resumeToken (if supplied)
+   5. Subscribe to subscriptions specified
+   6. Perform method calls 'runs' number of times (see working.properties)
 
 
 <b>To start an agent</b>
