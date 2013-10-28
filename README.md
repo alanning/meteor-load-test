@@ -62,12 +62,14 @@ times so generating a large amount of load is quite efficient.
 
  Each thread (client) will: 
 
-   1. Request initial payload
-   2. Request css & scripts found in initial response
-   3. Initiate DDP connection
-   4. Login via random resumeToken (if supplied)
-   5. Subscribe to subscriptions specified
-   6. Perform method calls 'runs' number of times (see working.properties)
+  1. Request initial payload
+  2. Request css & scripts found in initial response
+  3. Initiate DDP connection
+  4. Login via random resumeToken (if supplied)
+  5. Subscribe to subscriptions specified
+  6. Perform method calls 'runs' number of times (see working.properties)
+
+<br />
 
 
 <b>To start an agent</b>
