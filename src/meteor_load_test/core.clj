@@ -3,7 +3,7 @@
             [clojure.string :as str])
   (:import [java.net URI]
            [com.keysolutions.ddpclient DDPClient])
-  (:use meteor-load-test.util)
+  (:use [meteor-load-test util method_calls subscriptions initial_payload])
   )
 
 (declare test-runner-factory)
@@ -19,6 +19,7 @@
         resume-tokens (.getProperty propertyBag "grinder.resumeTokens")
         calls-raw (.getProperty propertyBag "grinder.calls")
         subscriptions (get-json-property propertyBag "grinder.subscriptions")
+        simulate-payload? (.getProperty propertyBag "grinder.simulatePayload")
         debug? (.getBoolean propertyBag "grinder.debug" false)]
 
     (fn []
@@ -43,24 +44,10 @@
         (when debug?
           (log "client id: " client-id))
 
-        ;; make initial http fetch
-        (def initial-html (.getText (get-html target-url-str)))
+        ;; download initial html payload and all referenced files
+        (when simulate-payload?
+          (fetch-static-assets get-html target-url-str))
 
-        (defn- get-relative-url 
-          "Gets a url relative to base url. Relative url may
-           start with /"
-          [base-url relative-url]
-          (let [base (drop-last-if '\/ base-url)
-                rel  (if (= \/ (first relative-url))
-                        relative-url
-                        (str \/ relative-url))]
-            (get-html (str base rel))))
-
-        ;; make subsequent javascript / css fetches
-        (process-urls
-          (partial get-relative-url target-url-str)
-          initial-html)
-        
         ;(if debug? (.addObserver ddp (SimpleDdpClientObserver.)))
         
         ;; connect ddp client
@@ -68,8 +55,11 @@
 
         ;; perform login via random resume token, if provided
         (when resume-tokens
-          (let [tokens (clojure.string/split resume-tokens #",")]
-            (call-method ddp "login" [{"resume" (rand-nth tokens)}])))
+          (let [tokens (clojure.string/split resume-tokens #",")
+                resume-token (rand-nth tokens)]
+            (when debug?
+              (log "logging in with resume token" resume-token))
+            (call-method ddp "login" [{"resume" resume-token}])))
 
         ;; initiate subscriptions
         (perform-subscriptions ddp client-id subscriptions)

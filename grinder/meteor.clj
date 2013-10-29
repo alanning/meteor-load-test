@@ -6,7 +6,7 @@
   (:import [net.grinder.script Grinder Test]
            [net.grinder.plugin.http HTTPRequest]
            )
-  (:use [meteor-load-test core util])
+  (:use [meteor-load-test core util subscriptions method_calls])
   )
 
 (let [grinder Grinder/grinder
