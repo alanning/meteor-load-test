@@ -2,16 +2,19 @@
   (:use [meteor-load-test util]))
 
 (defn perform-ddp-action
-  "Calls function f once for each element in vector v. 
-   f is a function of 1 or 2 arguments. v should contain 
-   elements of the following form:
+  "Calls function f once for each element in vector v with
+   delay if supplied. f is a function of 1 or 2 arguments.
+   v should contain elements of the following form:
      * string - interpreted as method name or subscription 
                 with no parameters
      * map - interpreted as method name or subscription 
              with parameter array.
              ex. 'method-name':[arg1, arg2, etc.]"
-  [invalid-msg f v]
+  [sleep invalid-msg f v]
   (doseq [item v] 
+    (when sleep
+      ;(Thread/sleep sleep-ms))
+      (sleep))
     (cond
       (map? item)
         (doseq [[method-name params] item]

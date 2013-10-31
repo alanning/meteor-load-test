@@ -26,5 +26,6 @@
              'method-name':[arg1, arg2, etc.]"
   [ddp client-id s]
   (let [do-action (partial subscribe ddp client-id)]
-    (perform-ddp-action invalid-subscription-msg do-action s)))
+    (log "perform-subscriptions")
+    (perform-ddp-action nil invalid-subscription-msg do-action s)))
 

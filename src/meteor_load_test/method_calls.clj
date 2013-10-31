@@ -22,6 +22,6 @@
    of seq s include: 
      * string = method name with no parameters
      * map = of form 'method-name':[arg1, arg2, etc.]"
-  [do-call s]
-  (perform-ddp-action invalid-calls-msg do-call s))
+  [sleep call-method-fn s]
+  (perform-ddp-action sleep invalid-calls-msg call-method-fn s))
 

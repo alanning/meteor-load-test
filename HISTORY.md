@@ -1,3 +1,7 @@
+## v0.0.4
+  
+  * Add support for login via email/password
+
 ## v0.0.3
   
   * Add support for multiple resumeTokens

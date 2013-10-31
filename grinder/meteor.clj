@@ -33,9 +33,16 @@
   (defn get-run-id []
     (.getRunNumber grinder))
 
+  (defn stop-fn []
+    (#(.stopThisWorkerThread grinder)))
+
+  (defn sleep-fn [ms]
+    (.sleep grinder ms))
+
   ;; return function that is executed once per thread by each worker process
   (worker-thread-factory
-    #(.stopThisWorkerThread grinder) 
+    stop-fn
+    sleep-fn
     properties
     get-client-id
     get-run-id

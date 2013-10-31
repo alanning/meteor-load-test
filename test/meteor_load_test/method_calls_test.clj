@@ -13,7 +13,7 @@
                                      "type" "client"}]}
         calls ["no-args" call-with-args]]
     (mocking [do-call log]
-      (perform-calls do-call calls)
+      (perform-calls nil do-call calls)
       (verify-call-times-for do-call 2)
       (verify-first-call-args-for do-call "no-args")
       (verify-nth-call-args-for 2 do-call "addEntry" (get call-with-args "addEntry")))))

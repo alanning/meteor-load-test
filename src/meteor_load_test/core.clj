@@ -13,28 +13,32 @@
    worker thread and which returns a test runner function. 
    Responsible for: initial payload get, ddp connection, and 
    subscriptions"
-  [stop-thread propertyBag get-client-id get-run-id get-html]
+  [stop-fn sleep-fn propertyBag get-client-id get-run-id get-html]
 
   (let [target-url-str (.getProperty propertyBag "grinder.targetUrl")
+        users (get-json-property propertyBag "grinder.users")
         resume-tokens (.getProperty propertyBag "grinder.resumeTokens")
+        call-delay-ms (.getProperty propertyBag "grinder.callDelayMs")
         calls-raw (.getProperty propertyBag "grinder.calls")
         subscriptions (get-json-property propertyBag "grinder.subscriptions")
-        simulate-payload? (.getProperty propertyBag "grinder.simulatePayload")
+        download-payload? (.getProperty propertyBag "grinder.downloadPayload")
         debug? (.getBoolean propertyBag "grinder.debug" false)]
 
     (fn []
 
       (when (empty? target-url-str)
         (log "Missing required setting 'grinder.targetUrl'")
-        (stop-thread))
+        (stop-fn))
 
       (def targetUrl (URI/create target-url-str))
 
       (when debug?
         (log "grinder.targetUrl: " target-url-str)
+        (log "grinder.downloadPayload?: " download-payload?)
+        (log "grinder.users: " users)
         (log "grinder.resumeTokens: " resume-tokens)
-        (log "grinder.calls: " calls-raw)
         (log "grinder.subscriptions: " subscriptions)
+        (log "grinder.calls: " calls-raw)
         (log "host: " (.getHost targetUrl) ", port: " (get-port targetUrl)))
 
       (let [ddp (DDPClient. (.getHost targetUrl) (get-port targetUrl))
@@ -45,7 +49,7 @@
           (log "client id: " client-id))
 
         ;; download initial html payload and all referenced files
-        (when simulate-payload?
+        (when download-payload?
           (fetch-static-assets get-html target-url-str))
 
         ;(if debug? (.addObserver ddp (SimpleDdpClientObserver.)))
@@ -53,19 +57,29 @@
         ;; connect ddp client
         (.connect ddp)
 
-        ;; perform login via random resume token, if provided
-        (when resume-tokens
-          (let [tokens (clojure.string/split resume-tokens #",")
-                resume-token (rand-nth tokens)]
-            (when debug?
-              (log "logging in with resume token" resume-token))
-            (call-method ddp "login" [{"resume" resume-token}])))
+
+
+        ;; perform login via random user info, if provided
+        (cond
+          (not-empty users)
+            (let [credentials (first (rand-nth users))]
+              (when debug?
+                (log "logging in with user credentials " credentials)) 
+              (call-method ddp "login" [{"user" {"email" (key credentials)} "password" (val credentials)}]))
+          (not-empty resume-tokens)
+            (let [tokens (clojure.string/split resume-tokens #",")
+                  resume-token (rand-nth tokens)]
+              (when debug?
+                (log "logging in with resume token " resume-token))
+              (call-method ddp "login" [{"resume" resume-token}])))
 
         ;; initiate subscriptions
         (perform-subscriptions ddp client-id subscriptions)
 
         ;; return function that will be executed for each test run
-        (test-runner-factory client-id get-run-id (partial call-method ddp) calls-raw)
+        (let [sleep #(sleep-fn (Integer. call-delay-ms))]
+          (test-runner-factory sleep client-id get-run-id (partial call-method ddp) calls-raw))
+        
       )  ; let ddp-client, id
     )  ; returned fn
   )  ; let
@@ -74,7 +88,7 @@
 
 (defn test-runner-factory
   "Returns an anonymous function which is run by each worker thread."
-  [client-id get-run-id do-call calls-raw]
+  [sleep client-id get-run-id call-method-fn calls-raw]
   (fn []
 
     (comment
@@ -95,7 +109,7 @@
           (log "entry-name " entry-name)
           (log "calls " calls))
 
-        (perform-calls do-call calls)
+        (perform-calls sleep call-method-fn calls)
 
         ))  ; non-empty calls
 

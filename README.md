@@ -65,7 +65,7 @@ times so generating a large amount of load is quite efficient.
   1. Request initial payload
   2. Request css & scripts found in initial response
   3. Initiate DDP connection
-  4. Login via random resumeToken (if supplied)
+  4. Login with randomized user credentials (if supplied)
   5. Subscribe to subscriptions specified
   6. Perform method calls 'runs' number of times (see working.properties)
 
