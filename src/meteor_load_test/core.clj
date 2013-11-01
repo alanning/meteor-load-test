@@ -18,7 +18,9 @@
   (let [target-url-str (.getProperty propertyBag "grinder.targetUrl")
         users (get-json-property propertyBag "grinder.users")
         resume-tokens (.getProperty propertyBag "grinder.resumeTokens")
-        call-delay-ms (.getProperty propertyBag "grinder.callDelayMs")
+        call-delay-ms (if-let [delay-ms (.getProperty propertyBag "grinder.callDelayMs")]
+                        (Integer. delay-ms)
+                        0)
         calls-raw (.getProperty propertyBag "grinder.calls")
         subscriptions (get-json-property propertyBag "grinder.subscriptions")
         download-payload? (.getProperty propertyBag "grinder.downloadPayload")
@@ -77,7 +79,7 @@
         (perform-subscriptions ddp client-id subscriptions)
 
         ;; return function that will be executed for each test run
-        (let [sleep #(sleep-fn (Integer. call-delay-ms))]
+        (let [sleep #(sleep-fn call-delay-ms)]
           (test-runner-factory sleep client-id get-run-id (partial call-method ddp) calls-raw))
         
       )  ; let ddp-client, id
