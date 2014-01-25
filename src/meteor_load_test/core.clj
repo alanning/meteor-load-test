@@ -7,6 +7,8 @@
   )
 
 (declare test-runner-factory)
+(def ddp-connected
+  com.keysolutions.ddpclient.DDPClient$CONNSTATE/Connected)
 
 (defn worker-thread-factory 
   "Returns an anonymous function which is called once by each 
@@ -43,7 +45,7 @@
         (log "grinder.calls: " calls-raw)
         (log "host: " (.getHost targetUrl) ", port: " (get-port targetUrl)))
 
-      (let [ddp (DDPClient. (.getHost targetUrl) (get-port targetUrl))
+      (let [ddp (DDPClient. (.getHost targetUrl) (get-port targetUrl) true)
             client-id (get-client-id)
            ]
 
@@ -59,7 +61,17 @@
         ;; connect ddp client
         (.connect ddp)
 
+        ;; wait for the websocket to connect and handshake
+        (loop [retries 5]
+          (try
+            (Thread/sleep 1000);
+            (catch InterruptedException e))
+          (when (and (pos? retries) (not= ddp-connected (.getState ddp)))
+            (log "Waiting for websocket connection to handshake")
+            (recur (dec retries))))
 
+        (when-not (= ddp-connected (.getState ddp))
+          (throw (ex-info "Websocket connection failed to handshake" {})))
 
         ;; perform login via random user info, if provided
         (cond
