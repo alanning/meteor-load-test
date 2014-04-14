@@ -118,6 +118,24 @@ Note: Currently collection updates are received via Meteor subscriptions but the
 Given that, probably the most realistic way to test responsiveness of your app under load is to spin up your agents, kick off the tests, wait for them to saturate your server, and then visit your site via your own browser.
 
 
+## Controlling a remote agent
+
+You will probably want to spin up agents on cloud machines so here's a couple useful things related to that:
+
+1. Install java, leiningen, and `meteor-load-test` on all cloud instances and your local machine
+2. Start console on local machine: `$ bin/grinder console start`
+3. SSH into cloud instances and remote forward port 6372:
+```
+$ ssh -i ~/.ssh/creds.pem -R 6372:localhost:6372 ec2-user@10.0.0.1
+```
+4. Start agents on each cloud instance:
+  ```
+  $ ssh <cloud instance>
+  $ bin/grinder agent start
+  ```
+5. Use grinder console to distribute properties script and start tests.  Probably want to delete `sut/.meteor/local` first.
+
+
 ## Terminology
 
 Source: Goranka Bjedov, [Google Tech Talk](http://www.youtube.com/watch?v=335LKIXRauA&feature=gv)
