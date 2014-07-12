@@ -45,7 +45,9 @@
         (log "grinder.calls: " calls-raw)
         (log "host: " (.getHost targetUrl) ", port: " (get-port targetUrl)))
 
-      (let [ddp (DDPClient. (.getHost targetUrl) (get-port targetUrl) true)
+      (let [ddp (DDPClient. (.getHost targetUrl) 
+                            (get-port targetUrl) 
+                            (isSSL targetUrl))
             client-id (get-client-id)
            ]
 

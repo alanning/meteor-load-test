@@ -23,6 +23,11 @@
     (= java.net.URI (type targetUri)) targetUri
     :else (throw (Exception. "Unsupported argument type"))))
 
+(defn isSSL 
+  "True if target url uses https, false otherwise"
+  [url]
+  (=  (.getScheme url) "https"))
+
 (defn get-port 
   "Accepts a string or java.net.URI. If URI port not
    specified, returns port based on Scheme/Protocol."
@@ -31,7 +36,7 @@
     (cond 
       (= -1 port) 
         (cond
-           (= "https" (.getScheme targetUri)) (int 443)
+           (isSSL targetUri) (int 443)
            :else (int 80))
       :else (int port))))
 
