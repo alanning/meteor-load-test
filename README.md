@@ -17,8 +17,10 @@ Users can configure options such as:
 <b>Install pre-req's</b>
   * Java
   * [leiningen](https://github.com/technomancy/leiningen) 
-    * *Note: make sure you have a relatively version of leiningen — 2+ — which you can get by using the installation
-      script from the web page. Some package managers, such as Debian/Ubuntu, will give you an older version.*
+    * *Note: make sure you use leiningen version 2+, which you can get by using the installation
+      script from the web page. Some package managers, such as Debian/Ubuntu, will give you an older v1 version 
+      which will result in `Could not find or load main class` errors. You can check which version of 
+      leiningen you have by running `lein --version`.*
 
 <b>Setup the project</b>
 
