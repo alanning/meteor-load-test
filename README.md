@@ -16,7 +16,9 @@ Users can configure options such as:
 ## Preliminaries
 <b>Install pre-req's</b>
   * Java
-  * [leiningen](https://github.com/technomancy/leiningen)
+  * [leiningen](https://github.com/technomancy/leiningen) 
+    * *Note: make sure you have a relatively version of leiningen — 2+ — which you can get by using the installation
+      script from the web page. Some package managers, such as Debian/Ubuntu, will give you an older version.*
 
 <b>Setup the project</b>
 
