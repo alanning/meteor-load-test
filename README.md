@@ -3,6 +3,8 @@ A load testing tool for Meteor applications.
 
 ** <b>Important!</b> Please don't load test sites running on meteor.com! Use your own servers! ** 
 
+You can watch a video presentation about this from Meteor DevShop here:  https://www.youtube.com/watch?v=tCPBGVI3PdA
+
 This tool utilizes [the Grinder](http://grinder.sourceforge.net/) to manage agents which execute a customized test script capable of speaking DDP with the target Meteor server.  Each agent simulates 1 or more client connections and records performance metrics.
 
 Users can configure options such as:
