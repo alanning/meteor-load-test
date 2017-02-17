@@ -2,6 +2,7 @@
 A load testing tool for Meteor applications.
 
 ** <b>Important!</b> Please don't load test sites running on meteor.com! Use your own servers! ** 
+If you need to run on external servers, see another service such as https:www.loadview-testing.com/
 
 You can watch a video presentation about this from Meteor DevShop here:  https://www.youtube.com/watch?v=tCPBGVI3PdA
 
